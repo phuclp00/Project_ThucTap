@@ -27,32 +27,32 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     // Tien dien 
     Route::prefix('dienke')->group(function () {
         Route::get('/', function () {
-            return "dienke";
+            return view('dienke');
         })->name('dienke');
     });
     Route::prefix('khachhang')->group(function () {
         Route::get('/', function () {
-            return "Khachhang";
+            return view('khachhang');
         })->name('khachhang');
     });
     Route::prefix('hoadon')->group(function () {
         Route::get('/', function () {
-            return "hoadon";
+            return view("hoadon");
         })->name('hoadon');
     });
     Route::prefix('giadien')->group(function () {
         Route::get('/', function () {
-            return "giadien";
+            return view("giadien");
         })->name('giadien');
     });
     Route::prefix('no')->group(function () {
         Route::get('/', function () {
-            return "no";
+            return view("no");
         })->name('no');
     });
     Route::prefix('hoadon')->group(function () {
         Route::get('/', function () {
-            return "hoadon";
+            return view("hoadon");
         })->name('hoadon');
     });
 });
