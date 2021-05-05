@@ -54,7 +54,7 @@ return [
     |
     */
 
-    'asset_url' => null,
+    'asset_url' => "http://laptrinhweb-bookstore.tk/public",
 
     /*
     |--------------------------------------------------------------------------
