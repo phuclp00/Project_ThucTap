@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\DienkeController;
+use App\Http\Controllers\GiaDienController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,23 +15,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-
-
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
-    Route::get('/dashboard', function () {
+    Route::get('/', function () {
         return view('dashboard');
     })->name('dashboard');
-
-    // Tien dien 
-    Route::prefix('dienke')->group(function () {
-        Route::get('/', function () {
-            return view('dienke');
-        })->name('dienke');
+    // Gia dien 
+    Route::prefix('giadien-hientai')->group(function () {
+        Route::get('/', [GiaDienController::class, 'showlist'])->name('giadien');
     });
+
     Route::prefix('khachhang')->group(function () {
         Route::get('/', function () {
             return view('khachhang');
@@ -40,19 +34,16 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
             return view("hoadon");
         })->name('hoadon');
     });
-    Route::prefix('giadien')->group(function () {
-        Route::get('/', function () {
-            return view("giadien");
-        })->name('giadien');
-    });
+
     Route::prefix('no')->group(function () {
         Route::get('/', function () {
             return view("no");
         })->name('no');
     });
-    Route::prefix('hoadon')->group(function () {
-        Route::get('/', function () {
-            return view("hoadon");
-        })->name('hoadon');
-    });
+
+    // Resource Controllers 
+    Route::resources([
+        'giadiens' => GiaDienController::class,
+        'dienkes' => DienkeController::class,
+    ]);
 });

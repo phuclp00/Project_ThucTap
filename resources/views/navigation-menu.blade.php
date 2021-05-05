@@ -22,12 +22,12 @@
                     </x-jet-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-jet-nav-link href="{{ route('dienke') }}" :active="request()->routeIs('tiendien')">
+                    <x-jet-nav-link href="{{url('/dienkes')}}">
                         {{ __('Quản lý điện kế') }}
                     </x-jet-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-jet-nav-link href="{{ route('giadien') }}" :active="request()->routeIs('giadien')">
+                    <x-jet-nav-link href="{{url('/giadiens')}}" :active="request()->routeIs('giadien')">
                         {{ __('Quản lý giá điện') }}
                     </x-jet-nav-link>
                 </div>
