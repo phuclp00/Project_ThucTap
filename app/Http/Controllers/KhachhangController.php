@@ -65,7 +65,7 @@ class KhachhangController extends Controller
                 'diachi'=>$request->diachi,
                 'dt'=>$request->sdt,
                 'cmnd'=>$request->cmnd,
-                
+                'create_at'=>Carbon::now(),
                 'create_by'=>Auth::user()->name,
             ]);
             return back()->with('message', 'Thêm khách hàng thành công!');}
