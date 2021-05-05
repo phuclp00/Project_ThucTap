@@ -167,7 +167,7 @@ class HoadonController extends Controller
             'chisocuoi' => $req->chisocuoi,
             'tongthanhtien' => $sotien,
             'ngaylaphd' => Carbon::now(),
-            'tinhtrang' => $req->tinhtrang,
+            'tinhtrang' => 1,
             'create_at' => Carbon::now(),
             'create_by' => Auth::user()->name,
         ]);
