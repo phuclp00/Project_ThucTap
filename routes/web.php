@@ -3,7 +3,8 @@
 use App\Http\Controllers\DienkeController;
 use App\Http\Controllers\GiaDienController;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\KhachhangController;
+use App\Http\Controllers\HoadonController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -27,26 +28,38 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('/', [GiaDienController::class, 'showlist'])->name('giadien');
     });
 
+    //DS Khách hàng
     Route::prefix('khachhang')->group(function () {
-        Route::get('/', function () {
-            return view('khachhang');
-        })->name('khachhang');
-    });
-    Route::prefix('hoadon')->group(function () {
-        Route::get('/', function () {
-            return view("hoadon");
-        })->name('hoadon');
+        Route::get('/',[KhachhangController::class,'all_kh'])->name('khachhang');
+        // Route::get('/',[KhachhangController::class,'add_khachhang'])->name('add_khachhang');
+        Route::post('add',[KhachhangController::class,'store'])->name('store');
+        Route::get('delete/{makh}',[KhachhangController::class,'delete'])->name('delete');
+        Route::get('update/{makh}',[KhachhangController::class,'edit'])->name('update');
+        Route::post('update/{makh}',[KhachhangController::class,'update']);
     });
 
+
     Route::prefix('no')->group(function () {
-        Route::get('/', function () {
-            return view("no");
-        })->name('no');
+        Route::get('/',[KhachhangController::class,'all_kh_no'])->name('no');
+        // Route::get('updatett/{mahd}',[KhachhangController::class,'edit_tt'])->name('update_tt');
+        Route::get('/updatett/{mahd}',[KhachhangController::class,'updatett'])->name('updatett');
     });
 
     // Resource Controllers 
     Route::resources([
         'giadiens' => GiaDienController::class,
         'dienkes' => DienkeController::class,
-    ]);
+     ]);
+    //Hóa đơn
+    Route::prefix('hoadon')->group(function () {
+        Route::get('/',[HoadonController::class,'all_hoadon'])->name('hoadon');
+        // Route::get('/print_hoadon/{mahd}','HoadonController@print_hoadon');
+        Route::get('/print_hoadon/{mahd}',[HoadonController::class,'print_hoadon'])->name('print_hoadon');
+        // Route::get('danhsachdk',[HoadonController::class,'all_dk'])->name('hoadon');
+        Route::post('/tinhtien',[HoadonController::class,'tinhtien'])->name('tinhtien');
+    });
+   // Route::resource('photos', PhotoController::class);
 });
+// route::get('/kh/delete/{id}', function($id){
+//     echo "delete $id";
+//     });
