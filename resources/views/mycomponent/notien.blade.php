@@ -24,6 +24,7 @@
                                 <th>Kỳ</th>
                                 <th>Tổng tiền(VND)</th>
                                 <th>Tình trạng</th>
+                                <th>Lựa chọn</th>
                             </tr>
                         </thead>
         
@@ -41,6 +42,7 @@
                                     Chưa thanh toán
                                 @endif
                                 </td>
+                                <td><a href="{{route('updatett', $no->mahd)}}" class="btn btn-primary"><i class="fas fa-pencil-alt"> Cập nhật</i></a></td>
                             </tr>
                         @endforeach
                         </tbody>

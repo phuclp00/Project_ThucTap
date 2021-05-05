@@ -16,7 +16,7 @@
                                     <div class="col-sm-5">
                                         {{-- Form tính tiền điện --}}
                                         <div class="card">
-                                            <form action="" method="post" class="p-3">
+                                            <form action="{{url('/hoadon/tinhtien/')}}" method="post" class="p-3">
                                                 @csrf
                                                 <div class="input-group col-md-20" style="margin-top: 20px">
                                                     <select class="custom-select" id="madk" name="madk">
@@ -157,7 +157,8 @@
                                     @endif
                                 </td> 
                                 <td>
-                                    <a href="{{route('print_hoadon',$hd->mahd)}}" class="btn btn-primary"><i class="fas fa-pencil-alt">In hóa đơn</i></a>
+                                    {{-- <a href="{{route('print_hoadon',$hd->mahd)}}" class="btn btn-primary"><i class="fas fa-pencil-alt">In hóa đơn</i></a> --}}
+                                    <a target="_blank" href="{{url('/hoadon/print_hoadon/'.$hd->mahd)}}" class="btn btn-primary">In hóa đơn</a>
                                 </td>  
                             </tr>
                             @endforeach

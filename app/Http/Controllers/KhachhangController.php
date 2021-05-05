@@ -32,7 +32,7 @@ class KhachhangController extends Controller
                     'makh' => 'required',
                     'tenkh' => 'required',
                     'diachi' => 'required',
-                    'cmnd' => 'required|min:9|max:12'
+                    'cmnd' => 'required|min:9|max:9'
                 ],
                 [
                     'sdt.required'=>'Số điện thoại phải nhập',
@@ -42,8 +42,8 @@ class KhachhangController extends Controller
                     'tenkh.required' => 'Tên KH phải nhập',
                     'diachi.required' => 'Địa chỉ  phải nhập',
                     'cmnd.required' => 'CMND phải nhập',
-                    'cmnd.min'=>'CMND ít nhất 9 số',
-                    'cmnd.max'=>'CMND tối đa 12 số',
+                    'cmnd.min'=>'CMND phải là 9 số',
+                    'cmnd.max'=>'CMND phải là 9 số',
                 ]
             );
                 
@@ -55,10 +55,10 @@ class KhachhangController extends Controller
                 return back()->with('message', $err);
             }
 
-            $findCus = DB::table('khachhang')->where('makh', $request->makh)->get();
+            $findCus = DB::table('khachhang')->where('makh', $request->makh)->first();
             if($findCus){
                 return back()->with('message', 'Mã khách hàng không được trùng!');
-            }
+            }else{
             DB::table('khachhang')->insert([
                 'makh'=>$request->makh,
                 'tenkh'=>$request->tenkh,
@@ -68,17 +68,22 @@ class KhachhangController extends Controller
                 
                 'create_by'=>Auth::user()->name,
             ]);
-            return back()->with('message', 'Thêm khách hàng thành công!');
+            return back()->with('message', 'Thêm khách hàng thành công!');}
         }catch(Exception $err){
             return back()->with('message', 'Thêm khách hàng thất bại!'.$err);
         }
         
     }
     //Xóa khách hàng
-    public function delete($makh){
+    public function delete(Request $request){
         try{
-            \DB::table('khachhang')->where('makh', $makh)->delete();
+            $findCus = DB::table('dienke')->where('makh', $request->makh)->first();
+            if($findCus){
+                return back()->with('message', 'Không được xóa!!!');
+            }else{
+            \DB::table('khachhang')->where('makh', $request->makh)->delete();
             return redirect()->back()->with('message', 'Xoá khách hàng thành công!');
+            }
         }catch(Exception $err){
             return redirect()->back()->with('message', 'Xoá khách hàng không thành công!');
         }
@@ -95,8 +100,34 @@ class KhachhangController extends Controller
 
     public function update(Request $request, $id){
         
+            
         // dd($time_update);
         try{
+            $validator = Validator::make( $request->all(),
+                [
+                    'sdt'=>'required|min:10|max:11',
+                    'tenkh' => 'required',
+                    'diachi' => 'required',
+                    'cmnd' => 'required|min:9|max:9'
+                ],
+                [
+                    'sdt.required'=>'Số điện thoại phải nhập',
+                    'sdt.min' => 'Số điện thoại ít nhất 10 chữ!!!',
+                    'sdt.max' => 'Số điện thoại tối đa 11 chữ',
+                    'tenkh.required' => 'Tên KH phải nhập',
+                    'diachi.required' => 'Địa chỉ  phải nhập',
+                    'cmnd.required' => 'CMND phải nhập',
+                    'cmnd.min'=>'CMND phải là 9 số',
+                    'cmnd.max'=>'CMND phải là 9 số',
+                ]
+            );
+            if($validator->fails()){
+                $err="";
+                foreach ($validator->errors()->messages() as $key => $value) {
+                    $err = $err . $value[0] . "<br/>";
+                }
+                return back()->with('message', $err);
+            }
             DB::table('khachhang')->where('makh',$id)->update([
                 'makh'=>$request->makh,
                 'tenkh'=>$request->tenkh,
@@ -114,8 +145,18 @@ class KhachhangController extends Controller
         }
     }
 
-
-
+    
+    public function updatett(Request $request, $mahd){
+        $all_hd=DB::table('hoadon')->where('mahd',$mahd)->get();
+        // dd($all_hd);
+        $tinhtrang=0;
+        DB::table('hoadon')->where('mahd',$mahd)->update([
+            'tinhtrang'=>$request->$tinhtrang,
+        ]);
+        $all_kh_no=DB::table('khachhang')->join('dienke', 'khachhang.makh','=','dienke.makh')
+            ->join('hoadon', 'hoadon.madk', '=', 'dienke.madk')->where('tinhtrang',1)->get();
+        return view('mycomponent.notien', ['kh_notien'=>$all_kh_no]);
+    }
     //DS khách hàng nợ
     public function all_kh_no(){
         try{
