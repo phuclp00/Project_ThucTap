@@ -130,9 +130,9 @@ class HoadonController extends Controller
     }
     public function tinhtien(Request $req)
     {
-        $madk = $req->madk;
-        $hoadon = DB::table('hoadon')->where('madk', $madk)->first();
-        $chisodau = $hoadon != null ? $hoadon->chisodau : 0;
+        $hoadon = DB::table('hoadon')->where('madk', $req->madk)->first();
+        $chisodau = $hoadon != null ? $hoadon->chisocuoi : 0;
+        $day_start = $hoadon != null ? $hoadon->denngay : Carbon::now();
         if ($req->chisocuoi > $chisodau)
             $sokw = $req->chisocuoi - $chisodau;
         else
@@ -157,29 +157,20 @@ class HoadonController extends Controller
         } else {
             $sotien = 100 * $bac1 + 50 * $bac2 + 50 * $bac3 + 100 * $bac4 + 100 * $bac5 + ($sokw - 400) * $bac6;
         }
-        if ($hoadon != null) {
-            DB::table('hoadon')->where('madk', $madk)->update(
-                [
-                    'chisocuoi' => $req->chisocuoi,
-                    'tongthanhtien' => $sotien
-                ]
-            );
-        } else {
-            DB::table('hoadon')->insert([
-                'mahd' => "HD" . \substr(Carbon::now()->timestamp, 0, 8),
-                'madk' => $req->madk,
-                'ky' => $req->ky,
-                'tungay' => $req->tungay,
-                'denngay' => Carbon::now()->toDateString,
-                'chisodau' => $req->chisodau,
-                'chisocuoi' => $req->chisocuoi,
-                'tongthanhtien' => $req->tongthanhtien,
-                'ngaylaphd' => Carbon::now()->toDateString,
-                'tinhtrang' => $req->tinhtrang,
-                'create_at' => Carbon::now()->toDateString,
-                'create_by' => Auth::user()->name,
-            ]);
-        }
+        DB::table('hoadon')->insert([
+            'mahd' => "HD" . \substr(Carbon::now()->timestamp, 0, 8),
+            'madk' => $req->madk,
+            'ky' => Carbon::now()->month,
+            'tungay' => $day_start,
+            'denngay' => Carbon::now(),
+            'chisodau' => $chisodau,
+            'chisocuoi' => $req->chisocuoi,
+            'tongthanhtien' => $sotien,
+            'ngaylaphd' => Carbon::now(),
+            'tinhtrang' => $req->tinhtrang,
+            'create_at' => Carbon::now(),
+            'create_by' => Auth::user()->name,
+        ]);
 
         return redirect()->route('hoadon');
     }
