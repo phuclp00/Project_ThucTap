@@ -59,7 +59,5 @@ return [
     | this will be the "public" disk but you may adjust this if needed.
     |
     */
-
     'profile_photo_disk' => 'public',
-
 ];
