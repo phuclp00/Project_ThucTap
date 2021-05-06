@@ -31,7 +31,7 @@ class StoreGiaDientRequest extends FormRequest
             'dongia' => 'required|numeric|min:1',
             'date' => 'required|date|after_or_equal:' . $todayDate,
             'star' => 'required|numeric|min:1',
-            'end' => 'required|numeric|gt:star'
+            'end' => 'nullable|numeric|gt:star'
         ];
     }
 }

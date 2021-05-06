@@ -26,11 +26,11 @@ class UpdateGiaDientRequest extends FormRequest
     {
         $todayDate = date('Y-m-d H:i:s');
         return [
-            'edit_mota' => 'max:255|regex:/^[a-zA-Z0-9]/',
-            'edit_dongia' => 'numeric|min:1',
-            'date' => 'date|after_or_equal:' . $todayDate,
-            'edit_star' => 'numeric|min:1',
-            'edit_end' => 'numeric|gt:edit_star'
+            'edit_mota' => 'required|max:255|regex:/^[a-zA-Z0-9]/',
+            'edit_dongia' => 'required|numeric|min:1',
+            'date' => 'required|date|after_or_equal:' . $todayDate,
+            'edit_star' => 'required|numeric|min:1',
+            'edit_end' => 'nullable|numeric|gt:edit_star'
         ];
     }
     // public function messages()
